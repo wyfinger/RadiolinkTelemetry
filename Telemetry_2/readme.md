@@ -3,4 +3,4 @@ It contain GPS sensor (GY-NEO6MV2) and can send to transceiver model position va
 And more, it write GPX track to micro sd card.
 And more, it measure and send to receiver power battery voltage.
 
-Смотрите также [описание проекта на русском](/readme_ru.md).
+Смотрите также [описание проекта на русском](https://github.com/wyfinger/RadiolinkTelemetry/blob/master/Telemetry_2/readme_ru.md).
