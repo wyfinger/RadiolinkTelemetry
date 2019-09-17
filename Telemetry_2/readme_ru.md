@@ -13,3 +13,6 @@ utc=10         ; time offset
 sat=8          ; minimum sattelite to GPS fix and start log
 volt=17.93077  ; voltage measurement koeffitient
 ```
+
+[Вот здесь тема на форуме](https://alnado.ru/forum/viewtopic.php?f=91&t=574), где все начиналось.
+
