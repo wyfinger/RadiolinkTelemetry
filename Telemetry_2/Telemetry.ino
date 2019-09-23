@@ -236,7 +236,8 @@ void loopGps() {
         Serial.println(F("GPS fixed"));
       #endif
       prepareGpxFile();
-      gpsFixed = true;  
+      gpsFixed = true;
+      lastGpxSec = gps.time.second();   // 2019-09-21 fix wrong time of first point
     }
   }
 
