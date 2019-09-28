@@ -44,10 +44,10 @@
 // Test it!
 
 // SD Storage Module (SPI)
-// MOSI	 11
-// MISO	 12
-// CLK	 13
-// CS	   SD_CS_PIN
+// MOSI  11
+// MISO  12
+// CLK   13
+// CS    SD_CS_PIN
 #define SD_CS_PIN 10
 //
 #define VOLT_PIN  A3
@@ -122,23 +122,16 @@ const char xmlCork[]        PROGMEM = "\t\t</trkseg>\n\t</trk>\n</gpx>";
 
 
 
-
-
-
-
-
-
-
 int getDight(float num, int dight) {
 
-	int a = abs(dight);
-	float b = dight <= 0 ? 10 : 0.1;
-	float c = num;
-	while (a-- > 0) {
-		dight = dight - dight / abs(dight);
-		c = c * b;
-	}
-	return abs((int)trunc(c) % 10);
+  int a = abs(dight);
+  float b = dight <= 0 ? 10 : 0.1;
+  float c = num;
+  while (a-- > 0) {
+    dight = dight - dight / abs(dight);
+    c = c * b;
+  }
+  return abs((int)trunc(c) % 10);
 
 }
 
@@ -350,36 +343,36 @@ void prepareGpxFile() {
 
 char* printNum(char* res, float num, unsigned int width, unsigned int digits) {
 
-	unsigned int i;                       // there's nothing complicated here, 
-	unsigned int hd = 0;                  // but will I be able to understand 
-	unsigned int p = 0;                   // this code a year from now?
+  unsigned int i;                       // there's nothing complicated here, 
+  unsigned int hd = 0;                  // but will I be able to understand 
+  unsigned int p = 0;                   // this code a year from now?
   unsigned int w = width==0 ? 8 : width;
 
-	for (i = 0; i < w; i++) {
-		res[i] = ' ';
-		if (getDight(num, i) != 0) hd = i;
-	}
-	if (num < 0.0) {
-		res[p++] = '-';
+  for (i = 0; i < w; i++) {
+    res[i] = ' ';
+    if (getDight(num, i) != 0) hd = i;
+  }
+  if (num < 0.0) {
+    res[p++] = '-';
     num = -num;
-	}  
-	float rounding = 0.5;
-	for (uint8_t i = 0; i < digits; ++i)
-		rounding /= 10.0;
-	num += rounding;
-	for (i = 0; i <= hd; i++) {
-		res[p++] = getDight(num, hd - i) + '0';
-	}
-	if ((digits > 0) && (p + 1 < w)) {
+  }  
+  float rounding = 0.5;
+  for (uint8_t i = 0; i < digits; ++i)
+    rounding /= 10.0;
+  num += rounding;
+  for (i = 0; i <= hd; i++) {
+    res[p++] = getDight(num, hd - i) + '0';
+  }
+  if ((digits > 0) && (p + 1 < w)) {
     res[p++] = '.';
     unsigned long int_part =  (unsigned long)num;
-	  double remainder = num - (double)int_part;
-	  while (digits-- > 0) {
-  		remainder *= 10.0;
-		  unsigned int toPrint = (unsigned int)(remainder);
-		  res[p++] = '0'+toPrint;
-		  remainder -= toPrint;
-	  }
+    double remainder = num - (double)int_part;
+    while (digits-- > 0) {
+      remainder *= 10.0;
+       unsigned int toPrint = (unsigned int)(remainder);
+       res[p++] = '0'+toPrint;
+       remainder -= toPrint;
+    }
   }
   if (width==0) res[p]=0;
   return res;
@@ -421,14 +414,14 @@ void pushGpxPoint() {
                                               // see https://github.com/arduino-libraries/SD/issues/50
   // seek to back                                               
   gpxFile.seek(gpxFile.size()-strlen(xmlCork));
-                             
+
   gpxFile.write(strcpy_P(buf, xmlTrkptA));                      // <trkpt lat="59.934721667" lon="30.310183333">
   gpxFile.write(printNum(buf, gps.location.lat(), 0, 7));
   gpxFile.write(strcpy_P(buf, xmlTrkptB));
   gpxFile.write(printNum(buf, gps.location.lng(), 0, 7));  
   gpxFile.write(strcpy_P(buf, xmlTrkptC));
                            
-  gpxFile.write(strcpy_P(buf, xmlTimeA));                     // <time>2019-08-10T18:16:51Z</time>
+  gpxFile.write(strcpy_P(buf, xmlTimeA));                       // <time>2019-08-10T18:16:51Z</time>
   gpxFile.write(getISO8601Time(buf));
   gpxFile.write(strcpy_P(buf, xmlTimeB));
 
@@ -465,9 +458,9 @@ void pushGpxPoint() {
 
   gpxFile.write(strcpy_P(buf, xmlTrkptD));                      // </trkpt>
 
-  gpxFile.write(strcpy_P(buf, xmlCork));                        // </trkseg>     
+  gpxFile.write(strcpy_P(buf, xmlCork));                        // </trkseg>
                                                                 // </trk> 
-  gpxFile.flush();                                              // </gpx>                 
+  gpxFile.flush();                                              // </gpx>
   gpxFile.close();
 
 }
@@ -531,7 +524,7 @@ void requestTelem() {
     if ((tlmPointCount % 20) == 0) {
       Serial.println(F("Sat  Alt  Speed  Rise  Volt   Yaw   Roll  Pitch  Dist"));
                      // 0                0     11744
-                     // 0    0    0                   11    22    33     12545       
+                     // 0    0    0                   11    22    33     12545
     }
     tlmPointCount++;
     byte bufSize = 59;
@@ -546,7 +539,7 @@ void requestTelem() {
     int pitch = yaw % 0x00A5;
     int speed = gps.speed.mps() * 10;             // for radiolink 221 = 22.1m/s
     unsigned int dist = round(distance*10);
-                  
+
     byte buffer[16] = {0x89, 0xAB,
                         sat,
                         highByte(alt), lowByte(alt),
@@ -558,7 +551,7 @@ void requestTelem() {
                         0x00};
     Wire.write(buffer, 16);
     packetSet = false;
-   
+
     #if DEBUG_REQUEST_TELEMETRY
       for (byte i=0; i<bufSize; i++) buf[i]=' ';
       printNum(buf+0, sat, 5, 0);
